@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#141414">
+    <meta name="description" content="يلا شوف - Watch Movies, Series.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>يلا شوف</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎬%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+    <!-- ==========================================
+         NAVBAR
+         ========================================== -->
+    <nav id="navbar">
+        <div class="nav-left">
+            <div class="logo" onclick="navigateTo('home')">Yalla<span>Shoof</span></div>
+            <ul class="nav-links">
+                <li>
+                    <a href="#" class="nav-link active" data-page="home" onclick="event.preventDefault();navigateTo('home')">Home</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="movies" onclick="event.preventDefault();navigateTo('movies')">Movies</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="series" onclick="event.preventDefault();navigateTo('series')">TV Series</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="arabic" onclick="event.preventDefault();navigateTo('arabic')">عربي</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="anime" onclick="event.preventDefault();navigateTo('anime')">Anime</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="mylist" onclick="event.preventDefault();navigateTo('mylist')">My List</a>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <!-- Search -->
+            <div class="search-container" id="searchContainer">
+                <button class="search-btn" onclick="toggleSearch()" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <input type="text" id="searchInput" class="search-input" 
+                       placeholder="Search movies, series, anime..." 
+                       autocomplete="off" autocorrect="off" spellcheck="false">
+            </div>
+            <!-- Profile -->
+            <div class="profile-menu">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=FreeFlix" 
+                     alt="Profile" class="profile-img" onclick="toggleProfileMenu()">
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="profile-header">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=FreeFlix" alt="">
+                        <div>
+                            <h4>Guest User</h4>
+                            <p>Free Account</p>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" onclick="event.preventDefault();navigateTo('mylist');closeProfileDropdown()">
+                        <i class="fas fa-heart"></i> My List
+                    </a>
+                    <a href="#" onclick="event.preventDefault();showToast('Settings coming soon!','info')">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <a href="#" onclick="event.preventDefault();showToast('Help center coming soon!','info')">
+                        <i class="fas fa-question-circle"></i> Help Center
+                    </a>
+                </div>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         MOBILE OVERLAY
+         ========================================== -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- ==========================================
+         MOBILE MENU
+         ========================================== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="logo">يلا<span>شوف</span></div>
+            <button onclick="toggleMobileMenu()" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-user">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=FreeFlix" alt="Profile">
+            <div>
+                <h4>Guest User</h4>
+                <p>Free Account</p>
+            </div>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="#" onclick="event.preventDefault();navigateTo('home');toggleMobileMenu()">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="#" onclick="event.preventDefault();navigateTo('movies');toggleMobileMenu()">
+                <i class="fas fa-film"></i> Movies
+            </a>
+            <a href="#" onclick="event.preventDefault();navigateTo('series');toggleMobileMenu()">
+                <i class="fas fa-tv"></i> TV Series
+            </a>
+            <a href="#" onclick="event.preventDefault();navigateTo('arabic');toggleMobileMenu()">
+                <i class="fas fa-mosque"></i> عربي
+            </a>
+            <a href="#" onclick="event.preventDefault();navigateTo('anime');toggleMobileMenu()">
+                <i class="fas fa-dragon"></i> Anime
+            </a>
+            <a href="#" onclick="event.preventDefault();navigateTo('mylist');toggleMobileMenu()">
+                <i class="fas fa-heart"></i> My List
+            </a>
+        </div>
+        <div class="mobile-menu-footer">
+            <a href="#" onclick="event.preventDefault();showToast('Settings coming soon!','info')">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" onclick="event.preventDefault();showToast('Help center coming soon!','info')">
+                <i class="fas fa-question-circle"></i> Help
+            </a>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         SEARCH OVERLAY
+         ========================================== -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-overlay-content">
+            <div class="search-overlay-header">
+                <h2 id="searchTitle">Search Results</h2>
+                <button onclick="closeSearch()" aria-label="Close search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-results-grid" id="searchResults"></div>
+            <div class="search-loading" id="searchLoading" style="display:none">
+                <div class="spinner"></div>
+                <p>Searching...</p>
+            </div>
+            <div class="no-results" id="noResults" style="display:none">
+                <i class="fas fa-search"></i>
+                <h3>No results found</h3>
+                <p>Try different keywords or browse categories</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MAIN CONTENT
+         ========================================== -->
+    <main id="mainContent">
+
+        <!-- ====== HOME PAGE ====== -->
+        <section id="page-home" class="page active">
+            <!-- Hero Banner -->
+            <div class="hero" id="heroSection">
+                <div class="hero-backdrop" id="heroBackdrop"></div>
+                <div class="hero-gradient-left"></div>
+                <div class="hero-gradient-bottom"></div>
+                <div class="hero-content" id="heroContent"></div>
+                <div class="hero-indicators" id="heroIndicators"></div>
+            </div>
+            <!-- Content Rows -->
+            <div class="content-section" id="homeContent"></div>
+        </section>
+
+        <!-- ====== MOVIES PAGE ====== -->
+        <section id="page-movies" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-film"></i> Movies</h1>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Genre</label>
+                        <select id="movieGenreFilter" onchange="applyFilters('movies')">
+                            <option value="">All Genres</option>
+                            <option value="28">Action</option>
+                            <option value="12">Adventure</option>
+                            <option value="16">Animation</option>
+                            <option value="35">Comedy</option>
+                            <option value="80">Crime</option>
+                            <option value="99">Documentary</option>
+                            <option value="18">Drama</option>
+                            <option value="10751">Family</option>
+                            <option value="14">Fantasy</option>
+                            <option value="36">History</option>
+                            <option value="27">Horror</option>
+                            <option value="10402">Music</option>
+                            <option value="9648">Mystery</option>
+                            <option value="10749">Romance</option>
+                            <option value="878">Sci-Fi</option>
+                            <option value="53">Thriller</option>
+                            <option value="10752">War</option>
+                            <option value="37">Western</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select id="movieSortFilter" onchange="applyFilters('movies')">
+                            <option value="popularity.desc">Most Popular</option>
+                            <option value="vote_average.desc">Highest Rated</option>
+                            <option value="primary_release_date.desc">Newest First</option>
+                            <option value="revenue.desc">Highest Revenue</option>
+                            <option value="original_title.asc">A-Z</option>
+                        </select>
+                    </div>
+                    <button class="filter-reset-btn" onclick="resetFilters('movies')">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+            <div class="content-grid" id="moviesGrid"></div>
+            <div class="grid-loading" id="moviesLoading">
+                <div class="spinner"></div>
+            </div>
+            <div class="load-more-container" id="moviesLoadMore" style="display:none">
+                <button class="btn-load-more" onclick="loadMorePage('movies')">
+                    <i class="fas fa-chevron-down"></i> Load More Movies
+                </button>
+            </div>
+        </section>
+
+        <!-- ====== TV SERIES PAGE ====== -->
+        <section id="page-series" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-tv"></i> TV Series</h1>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Genre</label>
+                        <select id="seriesGenreFilter" onchange="applyFilters('series')">
+                            <option value="">All Genres</option>
+                            <option value="10759">Action & Adventure</option>
+                            <option value="16">Animation</option>
+                            <option value="35">Comedy</option>
+                            <option value="80">Crime</option>
+                            <option value="99">Documentary</option>
+                            <option value="18">Drama</option>
+                            <option value="10751">Family</option>
+                            <option value="10762">Kids</option>
+                            <option value="9648">Mystery</option>
+                            <option value="10763">News</option>
+                            <option value="10764">Reality</option>
+                            <option value="10765">Sci-Fi & Fantasy</option>
+                            <option value="10766">Soap</option>
+                            <option value="10767">Talk</option>
+                            <option value="10768">War & Politics</option>
+                            <option value="37">Western</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select id="seriesSortFilter" onchange="applyFilters('series')">
+                            <option value="popularity.desc">Most Popular</option>
+                            <option value="vote_average.desc">Highest Rated</option>
+                            <option value="first_air_date.desc">Newest First</option>
+                            <option value="original_name.asc">A-Z</option>
+                        </select>
+                    </div>
+                    <button class="filter-reset-btn" onclick="resetFilters('series')">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+            <div class="content-grid" id="seriesGrid"></div>
+            <div class="grid-loading" id="seriesLoading">
+                <div class="spinner"></div>
+            </div>
+            <div class="load-more-container" id="seriesLoadMore" style="display:none">
+                <button class="btn-load-more" onclick="loadMorePage('series')">
+                    <i class="fas fa-chevron-down"></i> Load More Series
+                </button>
+            </div>
+        </section>
+
+        <!-- ====== ARABIC PAGE (NEW) ====== -->
+        <section id="page-arabic" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-mosque"></i> محتوى عربي</h1>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>النوع</label>
+                        <select id="arabicTypeFilter" onchange="applyFilters('arabic')">
+                            <option value="all">الكل</option>
+                            <option value="movie">أفلام</option>
+                            <option value="tv">مسلسلات</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>التصنيف</label>
+                        <select id="arabicGenreFilter" onchange="applyFilters('arabic')">
+                            <option value="">كل التصنيفات</option>
+                            <option value="28">أكشن</option>
+                            <option value="35">كوميدي</option>
+                            <option value="18">دراما</option>
+                            <option value="80">جريمة</option>
+                            <option value="27">رعب</option>
+                            <option value="10749">رومانسي</option>
+                            <option value="53">إثارة</option>
+                            <option value="10751">عائلي</option>
+                            <option value="36">تاريخي</option>
+                            <option value="99">وثائقي</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>ترتيب</label>
+                        <select id="arabicSortFilter" onchange="applyFilters('arabic')">
+                            <option value="popularity.desc">الأكثر شعبية</option>
+                            <option value="vote_average.desc">الأعلى تقييماً</option>
+                            <option value="primary_release_date.desc">الأحدث</option>
+                        </select>
+                    </div>
+                    <button class="filter-reset-btn" onclick="resetFilters('arabic')">
+                        <i class="fas fa-redo"></i> إعادة
+                    </button>
+                </div>
+            </div>
+            <div class="content-grid" id="arabicGrid"></div>
+            <div class="grid-loading" id="arabicLoading">
+                <div class="spinner"></div>
+            </div>
+            <div class="load-more-container" id="arabicLoadMore" style="display:none">
+                <button class="btn-load-more" onclick="loadMorePage('arabic')">
+                    <i class="fas fa-chevron-down"></i> عرض المزيد
+                </button>
+            </div>
+        </section>
+
+        <!-- ====== ANIME PAGE ====== -->
+        <section id="page-anime" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-dragon"></i> Anime</h1>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Type</label>
+                        <select id="animeTypeFilter" onchange="applyFilters('anime')">
+                            <option value="tv">TV Series</option>
+                            <option value="movie">Movies</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select id="animeSortFilter" onchange="applyFilters('anime')">
+                            <option value="popularity.desc">Most Popular</option>
+                            <option value="vote_average.desc">Highest Rated</option>
+                            <option value="first_air_date.desc">Newest First</option>
+                        </select>
+                    </div>
+                    <button class="filter-reset-btn" onclick="resetFilters('anime')">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+            <div class="content-grid" id="animeGrid"></div>
+            <div class="grid-loading" id="animeLoading">
+                <div class="spinner"></div>
+            </div>
+            <div class="load-more-container" id="animeLoadMore" style="display:none">
+                <button class="btn-load-more" onclick="loadMorePage('anime')">
+                    <i class="fas fa-chevron-down"></i> Load More Anime
+                </button>
+            </div>
+        </section>
+
+        <!-- ====== MY LIST PAGE ====== -->
+        <section id="page-mylist" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-heart"></i> My List</h1>
+                <p class="page-subtitle" id="mylistCount">0 titles</p>
+            </div>
+            <div class="content-grid" id="myListGrid"></div>
+            <div class="empty-state" id="emptyList">
+                <div class="empty-icon">
+                    <i class="fas fa-heart-broken"></i>
+                </div>
+                <h3>Your list is empty</h3>
+                <p>Add movies & series by clicking the <i class="fas fa-plus"></i> button on any title</p>
+                <button class="btn-primary" onclick="navigateTo('home')">
+                    <i class="fas fa-compass"></i> Browse Content
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         DETAIL MODAL
+         ========================================== -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-hero" id="modalHero">
+                <div class="modal-hero-img" id="modalHeroImg"></div>
+                <div class="modal-hero-gradient"></div>
+                <div class="modal-hero-content" id="modalHeroContent"></div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- VIDEO PLAYER -->
+    <div class="video-player-overlay" id="videoPlayer">
+        <div class="video-player-container" id="videoPlayerContainer">
+            <div class="player-top-controls" id="playerTopControls">
+                <button class="player-back-btn" onclick="closePlayer()" aria-label="Back">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="btn-label">Back</span>
+                </button>
+                <div class="player-title" id="playerTitle"></div>
+                <div class="player-top-right">
+                    <span class="source-badge" id="currentSourceName">Source</span>
+                </div>
+            </div>
+            <div class="player-bottom-bar" id="playerBottomBar">
+                <button class="player-action-btn" onclick="switchSource()" aria-label="Switch Source">
+                    <i class="fas fa-random"></i>
+                    <span>Switch</span>
+                </button>
+                <button class="player-action-btn" onclick="smartSwitch()" aria-label="Auto Find">
+                    <i class="fas fa-magic"></i>
+                    <span>Auto Find</span>
+                </button>
+                <button class="player-action-btn" onclick="toggleFullscreen()" id="playerFullscreenBtn" aria-label="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                    <span>Fullscreen</span>
+                </button>
+                <button class="player-action-btn danger" onclick="closePlayer()" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                    <span>Close</span>
+                </button>
+            </div>
+            <div class="player-click-zone" id="playerClickZone"></div>
+            <div class="player-loading" id="playerLoading">
+                <div class="spinner-large"></div>
+                <p class="loading-text">Finding best source...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRAILER MODAL -->
+    <div class="trailer-modal" id="trailerModal">
+        <div class="trailer-modal-content">
+            <button class="trailer-close-btn" onclick="closeTrailer()" aria-label="Close trailer">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="trailer-video-container" id="trailerContainer"></div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SCROLL TOP -->
+    <button class="scroll-top-btn" id="scrollTopBtn" 
+            onclick="window.scrollTo({top:0,behavior:'smooth'})" 
+            aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- FOOTER -->
+    <footer id="siteFooter">
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo">يلا<span>شوف</span></div>
+                    <p>Watch unlimited movies, TV series, and anime.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a href="#" aria-label="Reddit"><i class="fab fa-reddit-alien"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Browse</h4>
+                        <a href="#" onclick="event.preventDefault();navigateTo('home')">Home</a>
+                        <a href="#" onclick="event.preventDefault();navigateTo('movies')">Movies</a>
+                        <a href="#" onclick="event.preventDefault();navigateTo('series')">TV Series</a>
+                        <a href="#" onclick="event.preventDefault();navigateTo('arabic')">عربي</a>
+                        <a href="#" onclick="event.preventDefault();navigateTo('anime')">Anime</a>
+                        <a href="#" onclick="event.preventDefault();navigateTo('mylist')">My List</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Genres</h4>
+                        <a href="#">Action</a>
+                        <a href="#">Comedy</a>
+                        <a href="#">Drama</a>
+                        <a href="#">Horror</a>
+                        <a href="#">Sci-Fi</a>
+                        <a href="#">Romance</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Information</h4>
+                        <a href="#">About Us</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Connect</h4>
+                        <a href="#">Discord Server</a>
+                        <a href="#">Telegram Channel</a>
+                        <a href="#">Twitter / X</a>
+                        <a href="#">Report Issue</a>
+                        <a href="#">Request Title</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; by nour</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">DMCA</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="script.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>
